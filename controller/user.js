@@ -5,13 +5,12 @@ const bcryptjs = require('bcryptjs');
 
 exports.signUp = async (req, res) => {
     try {
-        // let user = await User.findOne({ where: { email: req.body.email } })
-        // if (user) {
-        //     return res.status(200).json({
-        //         msg: "Username already existed"
-        //     })
-        // }
-        
+        let user = await User.findOne({ where: { email: req.body.email } })
+        if (user) {
+            return res.status(200).json({
+                msg: "Username already existed"
+            })
+        }
         req.body.password = await bcryptjs.hashSync(req.body.password, 10);
         user = await User.create({
             name: req.body.name,
@@ -51,7 +50,7 @@ exports.login = async (req, res) => {
             token: token,
             user: user
         })
-        
+
     } catch (error) {
         res.status(404).json({
             status: 'Error',

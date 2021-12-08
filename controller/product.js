@@ -15,7 +15,14 @@ function available(start, duration) {
 
 exports.getProducts = async (req, res) => {
     try {
-        let products = await Product.findAll()
+        let lang = req.body.lang
+        let products
+        if (lang === 'en')
+            products = await Product.findAll({ attributes: { exclude: "arabic_name" } })
+        else if (lang === 'ar')
+            products = await Product.findAll({ attributes: { exclude: "name" } })
+        else
+            products = await Product.findAll()
         let prod = []
         for (let i = 0; i < products.length; i++) {
             if (available(products[i].startDate, products[i].duration))
@@ -35,9 +42,13 @@ exports.getProducts = async (req, res) => {
 
 exports.insertProduct = async (req, res) => {
     try {
-        let category = await Category.findOne({ category: req.body.category }).then(
+        let category = await Category.findOne({ where: { category: req.body.category } })
+        category = await Category.findOne({ where: { category: req.body.category } }).then(
             async result => {
                 if (result !== null) {
+                    console.log({
+                        r : result
+                    });
                     req.body.customField = JSON.stringify(req.body.customField)
                     let custF = await customField.create({
                         title: req.body.title,
@@ -114,7 +125,7 @@ exports.putProductId = async (req, res) => {
             }
         })
         return res.status(200).json({
-            msg : "Product updated"
+            msg: "Product updated"
         })
     } catch (error) {
         res.status(404).json({
