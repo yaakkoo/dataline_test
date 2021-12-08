@@ -16,11 +16,11 @@ function available(start, duration) {
 exports.getProducts = async (req, res) => {
     try {
         let lang = req.body.lang
-        let products
+        let products = []
         if (lang === 'en')
-            products = await Product.findAll({ attributes: { exclude: "arabic_name" } })
+            products = await Product.findAll({ attributes: { exclude: ["arabic_name"] } })
         else if (lang === 'ar')
-            products = await Product.findAll({ attributes: { exclude: "name" } })
+            products = await Product.findAll({ attributes: { exclude: ["name"] } })
         else
             products = await Product.findAll()
         let prod = []
@@ -47,7 +47,7 @@ exports.insertProduct = async (req, res) => {
             async result => {
                 if (result !== null) {
                     console.log({
-                        r : result
+                        r: result
                     });
                     req.body.customField = JSON.stringify(req.body.customField)
                     let custF = await customField.create({
