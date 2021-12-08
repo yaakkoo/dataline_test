@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  dataline:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: dataline
+    container_name: dataline-copy
+    restart: always
+    env_file: .env
+    environment:
+      - TOKEN=private key
+    ports:
+      - 3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules/bcrypt/
+    links:
+      - mysql
+mysql:
+  image: mysql
+  container_name: db
+  env_file: .env
+  environment:
+    - USERNAME=root
+    - MYSQL_DATABASE=yazan
+  volumes:
+    - mongodb:/data/db
+    - mongodb_config:/data/configdb
+
+volumes:
+  mysql: null

@@ -1,0 +1,4 @@
+Please first create database (yazan)
+then run (npm run init) using cmd
+
+(MYSQL)
