@@ -11,6 +11,8 @@ services:
     env_file: .env
     environment:
       - TOKEN=private key
+      - DATABASE_USERNAME=root
+      - MYSQL_DATABASE=yazan
     ports:
       - 3000
     volumes:
@@ -23,7 +25,7 @@ mysql:
   container_name: db
   env_file: .env
   environment:
-    - USERNAME=root
+    - DATABASE_USERNAME=root
     - MYSQL_DATABASE=yazan
   volumes:
     - mongodb:/data/db
